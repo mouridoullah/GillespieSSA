@@ -56,7 +56,7 @@ public class Gillespie {
 		return 0;
 	}
 	
-	void update_y(double[] x, double[][]v, int mu, int N) {
+	void update_x(double[] x, double[][]v, int mu, int N) {
 		for (int i = 0; i < N; i++) {
 			x[i] += v[mu][i];
 		}
@@ -81,7 +81,7 @@ public class Gillespie {
 			if(a0 == 0 ) break;
 			t += Math.log(1.0 / r1) / a0;
 			mu = get_mu(a, r2, M);
-			update_y(x, v, mu, N);
+			update_x(x, v, mu, N);
 			//System.out.println("t = "+ t +", mu = "+ mu +", y = "+ Arrays.toString(y));
 		}
 	}
