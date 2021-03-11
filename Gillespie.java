@@ -8,16 +8,16 @@ public class Gillespie {
 	private double t = 0.0, T = 10, r1, r2, a0;
 	
 	
-	public Gillespie(double[] c, double[][] v, double[] x, int n, int m, double t2) {
+	public Gillespie(double[] c, double[][] v, double[] x, int N, int M, double T) {
 		super();
 		this.c = c;
 		this.v = v;
 		this.x = x;
-		N = n;
-		M = m;
-		T = t2;
+		this.N = N;
+		this.M = M;
+		this.T = T;
 	}
-	double[] get_h(double[] x) {
+	double[] calculDeH(double[] x) {
 		double[] h = new double[4];
 	    h[0] = 1.0;
 	    h[1] = x[0];
@@ -27,7 +27,7 @@ public class Gillespie {
 	    return h;
 	}
 
-	double[] get_a(double[] h, double[] c, int M) {
+	double[] calculDePropensity(double[] h, double[] c, int M) {
 		double[] a = new double[4];
 		for (int i = 0; i < M; i++) {
 			a[i] = h[i] * c[i];
@@ -35,7 +35,7 @@ public class Gillespie {
 		return a;
 	}
 	
-	double sum_a(double[] a, int M) {
+	double sommeDesA(double[] a, int M) {
 		double a0 = 0;
 		for (int i = 0; i < M; i++) {
 			a0 += a[i];
@@ -43,8 +43,8 @@ public class Gillespie {
 		return a0;
 	}
 	
-	int get_mu(double[] a, double r2, int M) {
-		double r2a0 = r2 * sum_a(a, M);
+	int calculDMu(double[] a, double r2, int M) {
+		double r2a0 = r2 * sommeDesA(a, M);
 		double total = 0.0;
 		
 		for (int i = 0; i < M; i++) {
@@ -56,7 +56,7 @@ public class Gillespie {
 		return 0;
 	}
 	
-	void update_x(double[] x, double[][]v, int mu, int N) {
+	void miseAJourDesX(double[] x, double[][]v, int mu, int N) {
 		for (int i = 0; i < N; i++) {
 			x[i] += v[mu][i];
 		}
@@ -72,26 +72,17 @@ public class Gillespie {
 		    }
 		    System.out.println();
 			//System.out.println("-----------------------------------------------------");
-			double[] h = get_h(x);
-			double[] a = get_a(h, c, M);
-			a0 = sum_a(a, M);
+			double[] h = calculDeH(x);
+			double[] a = calculDePropensity(h, c, M);
+			a0 = sommeDesA(a, M);
 			Random rand = new Random(); 
 			r1 = rand.nextDouble();
 			r2 = rand.nextDouble();
 			if(a0 == 0 ) break;
 			t += Math.log(1.0 / r1) / a0;
-			mu = get_mu(a, r2, M);
-			update_x(x, v, mu, N);
+			mu = calculDMu(a, r2, M);
+			miseAJourDesX(x, v, mu, N);
 			//System.out.println("t = "+ t +", mu = "+ mu +", y = "+ Arrays.toString(y));
 		}
 	}
-
-	// public static void main( String[] args ){
-	// 	double y[] = {1000, 2000};
-	// 	double[][] v = { {1, 0},{-1, 1},{1, -1},{-1, 0} };
-	// 	double c[] = {5000.0, 50.0, 0.00005, 5.0};
-		
-	// 	Gillespie gillespie = new Gillespie(c, v, y, 2, 4, 0.0, 0.002);
-	// 	gillespie.run();
-	// }
 }
