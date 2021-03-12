@@ -1,2 +1,2 @@
 install:
-	gcc -o Gillespie Gillespie.c -lm
+	gcc -o Gillespie.o Gillespie.c -lm
