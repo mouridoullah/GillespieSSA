@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-time, a, b= np.loadtxt('data', skiprows=1).T
+time, a, b= np.loadtxt('data.txt', skiprows=1).T
 
 plt.plot(time, a, label='A', c='blue')
 plt.plot(time, b, label='B', c='red')
