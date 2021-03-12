@@ -6,6 +6,7 @@
 
 #define NOMBRES_ESPECES 2
 #define NOMBRES_DE_REACTIONS 4
+#define TEMPS_MAX 15.0
 
 /*--------------------------------------------------------*/
 void ecrireDansData(FILE *f, double t, double *x, int N){
@@ -134,7 +135,6 @@ void Gillespie(char *myfile, double* c, double v[][NOMBRES_ESPECES], double* x, 
 }
 
 int main(int argc, char const *argv[]){
-	double T = 5.20;
 	double c[] = {5000.0, 50.0, 0.00005, 5.0};
 	double x[] = {1000, 2000};
 	double v[NOMBRES_DE_REACTIONS][NOMBRES_ESPECES] = 	{ {1, 0},
@@ -144,7 +144,7 @@ int main(int argc, char const *argv[]){
 
 
 	
-	Gillespie("data", c, v, x, NOMBRES_ESPECES, NOMBRES_DE_REACTIONS, T);
+	Gillespie("data", c, v, x, NOMBRES_ESPECES, NOMBRES_DE_REACTIONS, TEMPS_MAX);
 
 
 	/*--------------------------------------------------*/
