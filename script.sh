@@ -1,3 +1,3 @@
-javac Driver.java &&
-java Driver > data &&
+gcc -o Gillespie Gillespie.c -lm &&
+./Gillespie &&
 python plot.py 

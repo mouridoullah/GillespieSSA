@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 time, a, b= np.loadtxt('data', skiprows=1).T
 
-plt.plot(time, a, label='A', c='black')
+plt.plot(time, a, label='A', c='blue')
 plt.plot(time, b, label='B', c='red')
 #plt.plot(time, c, label='C', c='blue')
 #plt.plot(time, d, label='D', c='green')
