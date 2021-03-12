@@ -74,13 +74,6 @@ void Gillespie(char *myfile, double* c, double v[][NOMBRES_ESPECES], double* x, 
 	srand(time(NULL));
 
 	while(t < T) {
-
-		printf("%f ", t);
-	    for(int i = 0; i < N; ++i){
-	    	printf("%f ", x[i]);
-	    }
-		printf("\n");
-
 		h = calculDeH(x, M);
 		a = calculDePropensity(h, c, M);
 		a0 = sommeDesA(a, M);
