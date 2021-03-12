@@ -1,1 +1,1 @@
-make && ./Gillespie && python plot.py 
+make && ./Gillespie.o && python plot.py 
