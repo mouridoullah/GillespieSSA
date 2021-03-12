@@ -98,7 +98,7 @@ int main(int argc, char const *argv[]){
 	double x[] = {1000, 2000};
 	double v[NOMBRES_DE_REACTIONS][NOMBRES_ESPECES] = { {1, 0}, {-1, 1}, {1, -1}, {-1, 0} };
 	
-	Gillespie("data", c, v, x, NOMBRES_ESPECES, NOMBRES_DE_REACTIONS, TEMPS_MAX);
+	Gillespie("data.txt", c, v, x, NOMBRES_ESPECES, NOMBRES_DE_REACTIONS, TEMPS_MAX);
 
 	return 0;
 }
