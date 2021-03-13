@@ -108,15 +108,7 @@ int main(int argc, char const *argv[]){
 	double c[] = {5000,5000,5000,5,5,5,0.00001,0.00001,0.00001};
 	double x[] = {1000, 1000, 1000};
 
-	double v[NOMBRES_DE_REACTIONS][NOMBRES_ESPECES] = 	{ {0,1,-1},
-											 	     	  {-1,0,1},
-											 	      	  {1,-1,0},
-											 	      	  {1,-1,0},
-											 	      	  {0,1,-1},
-											 	      	  {-1,0,1},
-											 	      	  {-1,0,1},
-											 	      	  {1,-1,0},
-											 	      	  {0,1,-1} };
+	double v[NOMBRES_DE_REACTIONS][NOMBRES_ESPECES] = { {0,1,-1}, {-1,0,1}, {1,-1,0}, {1,-1,0}, {0,1,-1}, {-1,0,1}, {-1,0,1}, {1,-1,0}, {0,1,-1} };
 	
 	Gillespie("data.txt", c, v, x, NOMBRES_ESPECES, NOMBRES_DE_REACTIONS, TEMPS_MAX);
 
