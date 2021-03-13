@@ -28,6 +28,10 @@ double* calculDeH(double* x, int n) {
     return h;
 }
 /*-------------------------------------------------------------*/
+double genererNombreAlea(){
+	return (double)rand()/RAND_MAX;
+}
+/*-------------------------------------------------------------*/
 double* calculDePropensity(double* h, double* c, int M) {
 	double* a = malloc(M*sizeof(double));
 	for (int i = 0; i < M; i++) {
@@ -78,8 +82,8 @@ void Gillespie(char *myfile, double* c, double v[][NOMBRES_ESPECES], double* x, 
 		a = calculDePropensity(h, c, M);
 		a0 = sommeDesA(a, M);
 
-		r1 = (double)rand()/RAND_MAX;
-		r2 = (double)rand()/RAND_MAX;
+		r1 = genererNombreAlea();
+		r2 = genererNombreAlea();
 
 		if(a0 == 0 ) break;
 
