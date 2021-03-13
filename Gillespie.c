@@ -6,7 +6,7 @@
 
 #define NOMBRES_ESPECES 3
 #define NOMBRES_DE_REACTIONS 9
-#define TEMPS_MAX 0.0002
+#define TEMPS_MAX 15.0
 
 /*--------------------------------------------------------*/
 void ecrireDansData(FILE *f, double t, double *x, int N){
