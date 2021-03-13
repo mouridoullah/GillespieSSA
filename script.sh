@@ -1,3 +1,1 @@
-javac Driver.java &&
-java Driver > data &&
-python plot.py 
+make && ./Gillespie.o && python plot.py 
