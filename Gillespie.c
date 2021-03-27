@@ -6,7 +6,6 @@
 
 #define NOMBRES_ESPECES 2
 #define NOMBRES_DE_REACTIONS 4
-#define TEMPS_MAX 15.0
 
 /*--------------------------------------------------------*/
 void ecrireDansData(FILE *f, double t, double *x, int N){
@@ -96,13 +95,25 @@ void Gillespie(char *myfile, double* c, double v[][NOMBRES_ESPECES], double* x, 
 	free(a);
 	free(h);
 }
+/*-------------------------------------------------------------*/
+void RunSimulation(){
+	double v[NOMBRES_DE_REACTIONS][NOMBRES_ESPECES];
+	double x[NOMBRES_ESPECES]; double c[NOMBRES_DE_REACTIONS]; double TEMPS_MAX;
 
+	FILE* f = NULL; 
+	f = fopen("input.txt", "r");
+
+	if (f != NULL){
+        fscanf(f, "%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf", &TEMPS_MAX, 
+        	     &x[0], &x[1], &c[0], &c[1], &c[2], &c[3], &v[0][0], &v[0][1], 
+        	     &v[1][0], &v[1][1], &v[2][0], &v[2][1], &v[3][0], &v[3][1]);
+        fclose(f);
+    }
+
+    Gillespie("data.txt", c, v, x, NOMBRES_ESPECES, NOMBRES_DE_REACTIONS, TEMPS_MAX);
+}
+/*-------------------------------------------------------------*/
 int main(int argc, char const *argv[]){
-	double c[] = {5000.0, 50.0, 0.00005, 5.0};
-	double x[] = {1000, 2000};
-	double v[NOMBRES_DE_REACTIONS][NOMBRES_ESPECES] = { {1, 0}, {-1, 1}, {1, -1}, {-1, 0} };
-	
-	Gillespie("data.txt", c, v, x, NOMBRES_ESPECES, NOMBRES_DE_REACTIONS, TEMPS_MAX);
-
-	return 0;
+	RunSimulation();
+    return (0);
 }
