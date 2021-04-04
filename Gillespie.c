@@ -8,6 +8,9 @@
 #define NOMBRES_DE_REACTIONS 4
 
 /*--------------------------------------------------------*/
+/*
+Ecrit les données issue de la simulation dans un fichier pour la visualisation
+*/
 void ecrireDansData(FILE *f, double t, double *x, int N){
     int i;
     fprintf(f, "%f ", t);
@@ -17,6 +20,10 @@ void ecrireDansData(FILE *f, double t, double *x, int N){
     fprintf(f, "\n");
 }
 /*-------------------------------------------------------------*/
+/*
+Nombre de combinaisons de réactifs moléculaires distinctes présente au temps t pour
+réaction R.
+*/
 double* calculDeH(double* x, int n) {
 	double* h = malloc(n*sizeof(double));
     h[0] = 1.0;
@@ -27,10 +34,16 @@ double* calculDeH(double* x, int n) {
     return h;
 }
 /*-------------------------------------------------------------*/
+/*
+Génère un nombre aléatoire uniformément entre 0 et 1.
+*/
 double genererNombreAlea(){
 	return (double)rand()/RAND_MAX;
 }
 /*-------------------------------------------------------------*/
+/*
+Calcule de propensions.
+*/
 double* calculDePropensity(double* h, double* c, int M) {
 	double* a = malloc(M*sizeof(double));
 	for (int i = 0; i < M; i++) {
@@ -39,6 +52,9 @@ double* calculDePropensity(double* h, double* c, int M) {
 	return a;
 }
 /*-------------------------------------------------------------*/
+/*
+Somme les propensions. 
+*/
 double sommeDesA(double* a, int M) {
 	double a0 = 0;
 	for (int i = 0; i < M; i++) {
@@ -47,6 +63,9 @@ double sommeDesA(double* a, int M) {
 	return a0;
 }
 /*-------------------------------------------------------------*/
+/*
+Calcule de l’indice de la prochaine réaction avec une transformation inverse.
+*/
 int calculDMu(double* a, double r2, int M) {
 	double r2a0 = r2 * sommeDesA(a, M);
 	double sum = 0.0;
@@ -59,13 +78,19 @@ int calculDMu(double* a, double r2, int M) {
 	}
 	return 0;
 }
-/*-------------------------------------------------------------*/	
+/*-------------------------------------------------------------*/
+/*
+Mets à jour le nombre de chaque espèces présent selon la matrice de stichométrique.
+*/
 void miseAJourDesX(double* x, double v[][NOMBRES_ESPECES], int mu, int N) {
 	for (int i = 0; i < N; i++) {
 		x[i] += v[mu][i];
 	}
 }
 /*-------------------------------------------------------------*/
+/*
+La fonction selon l’algorithme de Gillespie.
+*/
 void Gillespie(char *myfile, double* c, double v[][NOMBRES_ESPECES], double* x, int N, int M, double T) {
 	FILE *data;
         data = fopen(myfile, "w");
