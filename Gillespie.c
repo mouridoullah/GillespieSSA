@@ -89,7 +89,7 @@ void miseAJourDesX(double* x, double v[][NOMBRES_ESPECES], int mu, int N) {
 }
 /*-------------------------------------------------------------*/
 /*
-La fonction selon l’algorithme de Gillespie.
+L’algorithme de Gillespie.
 */
 void Gillespie(char *myfile, double* c, double v[][NOMBRES_ESPECES], double* x, int N, int M, double T) {
 	FILE *data;
