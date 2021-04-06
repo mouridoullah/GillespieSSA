@@ -4,8 +4,8 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define NOMBRE_ESPECES 3 
-#define NOMBRE_DE_REACTIONS 9
+#define NOMBRE_ESPECES 3
+#define NOMBRE_DE_REACTIONS 9																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															
 
 /*----------------------------------------------------------------------------------*/
 /*
@@ -216,9 +216,38 @@ int main(){
 	        fclose(f);
 	    }
 	}
-		
 
     Gillespie("data.txt", c, NOMBRE_ESPECES, v, x, NOMBRE_DE_REACTIONS, TEMPS_MAX);
+
     return 0;
 	
 }
+	// printf("%lf\n", TEMPS_MAX);
+	// for (int i = 0; i < NOMBRE_ESPECES; ++i){
+	// 	printf("x[%d] = %lf ", i, x[i] );
+	// }printf("\n");
+
+
+	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+	// 	printf("c[%d] = %lf ", i, c[i] );
+	// }printf("\n");
+
+	// double* h = calculDeH(x, NOMBRE_DE_REACTIONS);
+	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+	// 	printf("h[%d] = %lf ", i, h[i] );
+	// }printf("\n");
+
+	// double* a = calculDePropensity(h, c, NOMBRE_DE_REACTIONS);
+	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+	// 	printf("a[%d] = %lf ", i, a[i] );
+	// }printf("\n");
+
+	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+	// 	for (int j = 0; j < NOMBRE_ESPECES; ++j){
+	// 		printf("v[%d][%d] = %d ", i, j, v[i][j]);
+	// 	}
+	// }printf("\n");
+
+	// srand(time(NULL));
+	// double r2 = genererNombreAlea();
+	// int mu = calculDMu(a, r2, NOMBRE_DE_REACTIONS);
