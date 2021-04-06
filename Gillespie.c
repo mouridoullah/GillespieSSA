@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #define NOMBRE_ESPECES 3
-#define NOMBRE_DE_REACTIONS 9																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															
 
 /*----------------------------------------------------------------------------------*/
 /*
@@ -33,7 +33,7 @@ double* calculDeH(double* x, int M) {
 		S1 -> reactions products => hu = x1
 
 		*/
-		double* h = malloc(M*sizeof(double));
+		double* h = malloc(2*sizeof(double));
 	    h[0] = 1.0;
 	    h[1] = x[0];	
 
@@ -59,7 +59,7 @@ double* calculDeH(double* x, int M) {
 
 
 	*/
-		double* h = malloc(M*sizeof(double));
+		double* h = malloc(4*sizeof(double));
 	    h[0] = 1.0;
 	    h[1] = x[0];
 	    h[2] = 0.5*x[0]*x[1]*(x[0] - 1);
@@ -67,7 +67,7 @@ double* calculDeH(double* x, int M) {
 
 	    return h;
 	 } else if (NOMBRE_ESPECES == 3){
-		double* h = malloc(M*sizeof(double));
+		double* h = malloc(9*sizeof(double));
 	    h[0] = 1.0;
 	    h[1] = 1.0;
 	    h[2] = 1.0;
@@ -170,7 +170,7 @@ void Gillespie(char *myfile, double* c, int N, int v[][N], double* x, int M, dou
 }
 /*-------------------------------------------------------------*/
 int main(){
-	double TEMPS_MAX;
+	double TEMPS_MAX; int NOMBRE_DE_REACTIONS;
 	double x[NOMBRE_ESPECES];
 	double c[NOMBRE_DE_REACTIONS];
 	int v[NOMBRE_DE_REACTIONS][NOMBRE_ESPECES];
@@ -179,8 +179,8 @@ int main(){
 		FILE* f = NULL; 
 		f = fopen("input pour une espece.txt", "r");
 		if (f != NULL){
-	        fscanf(f, "%lf %lf %lf %lf %d %d", 
-	        	&TEMPS_MAX, &x[0], &c[0], &c[1],
+	        fscanf(f, "%lf %d  %lf %lf %lf %d %d",   
+	        	&TEMPS_MAX, &NOMBRE_DE_REACTIONS, &x[0], &c[0], &c[1],
 	        	&v[0][0], &v[1][0]);
 
 	        fclose(f);
@@ -189,8 +189,8 @@ int main(){
 		FILE* f = NULL; 
 		f = fopen("input pour deux especes.txt", "r");
 		if (f != NULL){
-	        fscanf(f, "%lf %lf %lf %lf %lf %lf %lf %d %d %d %d %d %d %d %d", 
-	        	&TEMPS_MAX, &x[0], &x[1], &c[0], &c[1], &c[2], &c[3],
+	        fscanf(f, "%lf %d %lf %lf %lf %lf %lf %lf %d %d %d %d %d %d %d %d", 
+	        	&TEMPS_MAX, &NOMBRE_DE_REACTIONS, &x[0], &x[1], &c[0], &c[1], &c[2], &c[3],
 	        	&v[0][0], &v[0][1], &v[1][0], &v[1][1], &v[2][0], &v[2][1], &v[3][0], &v[3][1]);
 
 	        fclose(f);
@@ -199,8 +199,8 @@ int main(){
 		FILE* f = NULL; 
 		f = fopen("input pour trois especes.txt", "r");
 		if (f != NULL){
-	        fscanf(f, "%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", 
-        	&TEMPS_MAX, 
+	        fscanf(f, "%lf %d %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", 
+        	&TEMPS_MAX, &NOMBRE_DE_REACTIONS,
         	&x[0], &x[1], &x[2], 
         	&c[0], &c[1], &c[2], &c[3], &c[4], &c[5], &c[6], &c[7], &c[8],
         	&v[0][0], &v[0][1], &v[0][2],
@@ -218,6 +218,8 @@ int main(){
 	}
 
     Gillespie("data.txt", c, NOMBRE_ESPECES, v, x, NOMBRE_DE_REACTIONS, TEMPS_MAX);
+
+	//printf("%d\n", NOMBRE_DE_REACTIONS);
 
     return 0;
 	
