@@ -183,57 +183,8 @@ int main(){
 
     fclose(out);
 /*-----------------------------------------------------------------------------------------------------------*/
-	// double r1 = 0, r2 = 0, a0 = 0, t = 0;
-	// double* h;
-	// double* a;
-	// int mu = 0;
 
-	// srand(time(NULL));
-
-	// for (int i = 0; i < NOMBRE_ESPECES; ++i){
-	// 		printf("x[%d] = %lf ", i, x[i] );
-	// 	}printf("\n");
-
-	// while(t < TEMPS_MAX) {
-	// 	h = calculDeH(x, NOMBRE_DE_REACTIONS);
-	// 	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
-	// 	printf("h[%d] = %lf ", i, h[i] );
-	// 	}printf("\n");
-
-	// 	a = calculDePropensity(h, c, NOMBRE_DE_REACTIONS);
-	// 	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
-	// 		printf("a[%d] = %lf ", i, a[i] );
-	// 	}printf("\n");
-
-	// 	a0 = sommeDesA(a, NOMBRE_DE_REACTIONS);
-
-	// 	r1 = genererNombreAlea();
-	// 	r2 = genererNombreAlea();
-
-	// 	if(a0 == 0 ) break;
-
-	// 	t += log(1.0 / r1) / a0;
-	// 	mu = calculDMu(a, r2, NOMBRE_DE_REACTIONS);
-	// 	printf("m = %d :\n", mu);
-
-	// 	miseAJourDesX(x, NOMBRE_ESPECES, v, mu);
-
-	// 	for (int i = 0; i < NOMBRE_ESPECES; ++i){
-	// 		if (x[i] <= 0){
-	// 			printf("Fin du programme\n");	
-	// 			exit(1);
-	// 		} 
-	// 	}
-
-	// 	for (int i = 0; i < NOMBRE_ESPECES; ++i){
-	// 		printf("x[%d] = %lf ", i, x[i] );
-	// 	}printf("\n");
-
-	// }
-	// free(a);
-	// free(h);
-
- 	//Gillespie("data.txt", c, NOMBRE_ESPECES, v, x, NOMBRE_DE_REACTIONS, TEMPS_MAX);
+ 	Gillespie("data.txt", c, NOMBRE_ESPECES, v, x, NOMBRE_DE_REACTIONS, TEMPS_MAX);
 /*-----------------------------------------------------------------------------------------------------------*/
     printf("%lf\n", TEMPS_MAX);
 	for (int i = 0; i < NOMBRE_ESPECES; ++i){
