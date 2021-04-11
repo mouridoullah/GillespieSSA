@@ -1,0 +1,17 @@
+Nombre de produits: 3 
+Nombre de reactions: 2
+
+Reaction 1:
+2 H + O -> H_2_O avec c = 2
+
+Reaction 2:
+H_2_O -> 2 H + O avec c = 9.9
+
+Le nombre de molecule de chaque espece:
+O = 200 
+H = 300 
+H_2_O = 50	
+
+La matrice donne:
+-1 -2 1
+1 2 -1

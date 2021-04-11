@@ -5,7 +5,7 @@ time, a, b, c = np.loadtxt('data.txt', skiprows=1).T
 
 plt.plot(time, a, label='species A', c='blue')
 plt.plot(time, b, label='species B', c='red')
-plt.plot(time, c, label='species C', c='yellow')
+plt.plot(time, c, label='species C', c='green')
 #plt.plot(time, d, label='D', c='green')
 #plt.plot(time, e, label='E', c='yellow')
 plt.legend(loc='upper left')

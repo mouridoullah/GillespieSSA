@@ -4,7 +4,6 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define NOMBRE_ESPECES 3
 																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															
 
 /*----------------------------------------------------------------------------------*/
@@ -25,61 +24,11 @@ Nombre de combinaisons de réactifs moléculaires distinctes présente au temps 
 réaction R.
 */
 double* calculDeH(double* x, int M) {
-	
-	if (NOMBRE_ESPECES == 1){
-		/*
-
-		*  -> S1 => hu = 1
-		S1 -> reactions products => hu = x1
-
-		*/
-		double* h = malloc(2*sizeof(double));
-	    h[0] = 1.0;
-	    h[1] = x[0];	
-
-	    return h;	
-	}else if(NOMBRE_ESPECES == 2){
-		/*
-	Formations
-	*          -> S1                 => hu = 1
-	*          -> 2S2                => hu = 1
-
-	Destructions
-	S1         -> reactions products => hu = X1
-	S2         -> reactions products => hu = X2
-
-	Bimoleculaire
-	2S1        -> reactions products => hu = 0.5 * X1(X1 - 1)
-	2S2        -> reactions products => hu = 0.5 * X2(X2 - 1)
-	S1 + S2    -> reactions products => hu = X1 * X2
-
-	Avec trois molecules
-	S1 + 2S2   -> reactions products => hu = 0.5 * X1X2(X2 - 1)
-	3S1        -> reactions products => hu = (1/6) * X1(X1 - 1)(X1 - 2)
-
-
-	*/
-		double* h = malloc(4*sizeof(double));
-	    h[0] = 1.0;
-	    h[1] = x[0];
-	    h[2] = 0.5*x[0]*x[1]*(x[0] - 1);
-	    h[3] = x[0];
+		double* h = malloc(M*sizeof(double));
+	    h[0] = x[0]*x[1];
+	    h[1] = 1.0;	
 
 	    return h;
-	 } else if (NOMBRE_ESPECES == 3){
-		double* h = malloc(9*sizeof(double));
-	    h[0] = 1.0;
-	    h[1] = 1.0;
-	    h[2] = 1.0;
-	    h[3] = x[0];
-	    h[4] = x[1];
-	    h[5] = x[2];
-	    h[6] = 0.5*x[0]*x[1]*(x[0] - 1);
-	    h[7] = 0.5*x[1]*x[2]*(x[1] - 1);
-	    h[8] = 0.5*x[2]*x[0]*(x[2] - 1);
-
-	    return h;
-	}
 }
 /*-------------------------------------------------------------*/
 /*
@@ -149,6 +98,7 @@ void Gillespie(char *myfile, double* c, int N, int v[][N], double* x, int M, dou
 
 	srand(time(NULL));
 
+	ecrireDansData(data, t, x, N);
 	while(t < T) {
 		h = calculDeH(x, M);
 		a = calculDePropensity(h, c, M);
@@ -164,92 +114,164 @@ void Gillespie(char *myfile, double* c, int N, int v[][N], double* x, int M, dou
 
 		miseAJourDesX(x, N, v, mu);
 		ecrireDansData(data, t, x, N);
+
+		for (int i = 0; i < N; ++i){
+			if (x[i] <= 0){
+				printf("Fin du programme\n");	
+				exit(1);
+			} 
+		}
+
+
 	}
 	free(a);
 	free(h);
 }
 /*-------------------------------------------------------------*/
 int main(){
-	double TEMPS_MAX; int NOMBRE_DE_REACTIONS;
-	double x[NOMBRE_ESPECES];
-	double c[NOMBRE_DE_REACTIONS];
-	int v[NOMBRE_DE_REACTIONS][NOMBRE_ESPECES];
+	double TEMPS_MAX = 1000.0;
+	int NOMBRE_ESPECES, NOMBRE_DE_REACTIONS;
+    FILE* out = NULL;
+    out = fopen("test.txt", "r"); 
+    if(out == NULL){
+        printf("\nError cannot open file");
+        exit(1);
+    }
 
-	if (NOMBRE_ESPECES == 1){
-		FILE* f = NULL; 
-		f = fopen("input pour une espece.txt", "r");
-		if (f != NULL){
-	        fscanf(f, "%lf %d  %lf %lf %lf %d %d",   
-	        	&TEMPS_MAX, &NOMBRE_DE_REACTIONS, &x[0], &c[0], &c[1],
-	        	&v[0][0], &v[1][0]);
+    fseek(out, 20, SEEK_SET);
+    //printf("on est a la position: %ld\n", ftell(out));
+    fscanf(out ,"%d", &NOMBRE_ESPECES);
+    fseek(out, 44, SEEK_SET);
+    //printf("on est a la position: %ld\n", ftell(out));
+    fscanf(out, "%d", &NOMBRE_DE_REACTIONS);
+    printf("Nombre de produits: %d\nNombre de reaction : %d\n", NOMBRE_ESPECES, NOMBRE_DE_REACTIONS);
 
-	        fclose(f);
-	    }
-	}else if (NOMBRE_ESPECES == 2){
-		FILE* f = NULL; 
-		f = fopen("input pour deux especes.txt", "r");
-		if (f != NULL){
-	        fscanf(f, "%lf %d %lf %lf %lf %lf %lf %lf %d %d %d %d %d %d %d %d", 
-	        	&TEMPS_MAX, &NOMBRE_DE_REACTIONS, &x[0], &x[1], &c[0], &c[1], &c[2], &c[3],
-	        	&v[0][0], &v[0][1], &v[1][0], &v[1][1], &v[2][0], &v[2][1], &v[3][0], &v[3][1]);
+    double x[NOMBRE_ESPECES], c[NOMBRE_DE_REACTIONS];
+    int v[NOMBRE_DE_REACTIONS][NOMBRE_ESPECES];
 
-	        fclose(f);
-	    }
-	}else if (NOMBRE_ESPECES == 3){
-		FILE* f = NULL; 
-		f = fopen("input pour trois especes.txt", "r");
-		if (f != NULL){
-	        fscanf(f, "%lf %d %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", 
-        	&TEMPS_MAX, &NOMBRE_DE_REACTIONS,
-        	&x[0], &x[1], &x[2], 
-        	&c[0], &c[1], &c[2], &c[3], &c[4], &c[5], &c[6], &c[7], &c[8],
-        	&v[0][0], &v[0][1], &v[0][2],
-        	&v[1][0], &v[1][1], &v[1][2],
-        	&v[2][0], &v[2][1], &v[2][2],
-        	&v[3][0], &v[3][1], &v[3][2],
-        	&v[4][0], &v[4][1], &v[4][2],
-        	&v[5][0], &v[5][1], &v[5][2],
-        	&v[6][0], &v[6][1], &v[6][2],
-        	&v[7][0], &v[7][1], &v[7][2],
-        	&v[8][0], &v[8][1], &v[8][2] );
+    fseek(out, 85, SEEK_SET);
+    //printf("on est a la position: %ld\n", ftell(out));
+    fscanf(out,"%lf", &c[0]);
+    printf("c1 = %lf\n", c[0]);
 
-	        fclose(f);
-	    }
-	}
+    fseek(out, 126, SEEK_SET);
+    //printf("on est a la position: %ld\n", ftell(out));
+    fscanf(out,"%lf", &c[1]);
+    printf("c2 = %lf\n", c[1]);
 
-    Gillespie("data.txt", c, NOMBRE_ESPECES, v, x, NOMBRE_DE_REACTIONS, TEMPS_MAX);
+    //char d;
+    fseek(out, 175, SEEK_SET);
+    fscanf(out,"%lf", &x[0]);
+    printf("x1, nombre de molecules d'Oxygène: %lf\n", x[0]);
 
-	//printf("%d\n", NOMBRE_DE_REACTIONS);
+    fseek(out, 184, SEEK_SET);
+    fscanf(out,"%lf", &x[1]);
+    printf("x2, nombre de molecules d'Hydrogene: %lf\n", x[1]);
 
-    return 0;
-	
-}
-	// printf("%lf\n", TEMPS_MAX);
-	// for (int i = 0; i < NOMBRE_ESPECES; ++i){
-	// 	printf("x[%d] = %lf ", i, x[i] );
-	// }printf("\n");
+    fseek(out, 197, SEEK_SET);
+    fscanf(out,"%lf", &x[2]);
+    printf("x3, nombre de molecules d'Eau H2O: %lf\n", x[2]);
 
+    fseek(out, 220, SEEK_SET);
+    fscanf(out,"%d %d %d %d %d %d", &v[0][0], &v[0][1], &v[0][2], &v[1][0], &v[1][1], &v[1][2]);
+    for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+        for (int j = 0; j < NOMBRE_ESPECES; ++j){
+            printf("%d ", v[i][j]);
+        }
+        printf("\n");
+    }
 
-	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
-	// 	printf("c[%d] = %lf ", i, c[i] );
-	// }printf("\n");
-
-	// double* h = calculDeH(x, NOMBRE_DE_REACTIONS);
-	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
-	// 	printf("h[%d] = %lf ", i, h[i] );
-	// }printf("\n");
-
-	// double* a = calculDePropensity(h, c, NOMBRE_DE_REACTIONS);
-	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
-	// 	printf("a[%d] = %lf ", i, a[i] );
-	// }printf("\n");
-
-	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
-	// 	for (int j = 0; j < NOMBRE_ESPECES; ++j){
-	// 		printf("v[%d][%d] = %d ", i, j, v[i][j]);
-	// 	}
-	// }printf("\n");
+    fclose(out);
+/*-----------------------------------------------------------------------------------------------------------*/
+	// double r1 = 0, r2 = 0, a0 = 0, t = 0;
+	// double* h;
+	// double* a;
+	// int mu = 0;
 
 	// srand(time(NULL));
-	// double r2 = genererNombreAlea();
-	// int mu = calculDMu(a, r2, NOMBRE_DE_REACTIONS);
+
+	// for (int i = 0; i < NOMBRE_ESPECES; ++i){
+	// 		printf("x[%d] = %lf ", i, x[i] );
+	// 	}printf("\n");
+
+	// while(t < TEMPS_MAX) {
+	// 	h = calculDeH(x, NOMBRE_DE_REACTIONS);
+	// 	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+	// 	printf("h[%d] = %lf ", i, h[i] );
+	// 	}printf("\n");
+
+	// 	a = calculDePropensity(h, c, NOMBRE_DE_REACTIONS);
+	// 	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+	// 		printf("a[%d] = %lf ", i, a[i] );
+	// 	}printf("\n");
+
+	// 	a0 = sommeDesA(a, NOMBRE_DE_REACTIONS);
+
+	// 	r1 = genererNombreAlea();
+	// 	r2 = genererNombreAlea();
+
+	// 	if(a0 == 0 ) break;
+
+	// 	t += log(1.0 / r1) / a0;
+	// 	mu = calculDMu(a, r2, NOMBRE_DE_REACTIONS);
+	// 	printf("m = %d :\n", mu);
+
+	// 	miseAJourDesX(x, NOMBRE_ESPECES, v, mu);
+
+	// 	for (int i = 0; i < NOMBRE_ESPECES; ++i){
+	// 		if (x[i] <= 0){
+	// 			printf("Fin du programme\n");	
+	// 			exit(1);
+	// 		} 
+	// 	}
+
+	// 	for (int i = 0; i < NOMBRE_ESPECES; ++i){
+	// 		printf("x[%d] = %lf ", i, x[i] );
+	// 	}printf("\n");
+
+	// }
+	// free(a);
+	// free(h);
+
+ 	//Gillespie("data.txt", c, NOMBRE_ESPECES, v, x, NOMBRE_DE_REACTIONS, TEMPS_MAX);
+/*-----------------------------------------------------------------------------------------------------------*/
+    printf("%lf\n", TEMPS_MAX);
+	for (int i = 0; i < NOMBRE_ESPECES; ++i){
+		printf("x[%d] = %lf ", i, x[i] );
+	}printf("\n");
+
+
+	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+		printf("c[%d] = %lf ", i, c[i] );
+	}printf("\n");
+
+	double* h = calculDeH(x, NOMBRE_DE_REACTIONS);
+	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+		printf("h[%d] = %lf ", i, h[i] );
+	}printf("\n");
+
+	double* a = calculDePropensity(h, c, NOMBRE_DE_REACTIONS);
+	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+		printf("a[%d] = %lf ", i, a[i] );
+	}printf("\n");
+
+	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+		for (int j = 0; j < NOMBRE_ESPECES; ++j){
+			printf("v[%d][%d] = %d ", i, j, v[i][j]);
+		}printf("\n");
+	}printf("\n");
+
+	srand(time(NULL));
+	double r2 = genererNombreAlea();
+	int mu;
+
+	for (int i = 0; i < 10; ++i){
+		mu = calculDMu(a, r2, NOMBRE_DE_REACTIONS);	
+		printf("La reaction n° %d  a eu lieu\n", mu);
+	}printf("\n");
+/*-----------------------------------------------------------------------------------------------------------*/
+
+
+
+    return 0;
+}
