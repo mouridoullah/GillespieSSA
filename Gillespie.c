@@ -170,10 +170,13 @@ void Parser(char *myfile, int N, int M, int v[][N], double* x, double* c){
     fscanf(out,"%lf", &x[2]);
     printf("x3, nombre de molecules d'Eau H2O: %lf\n", x[2]);
 
+    int d[M][N];
     fseek(out, 220, SEEK_SET);
-    fscanf(out,"%d %d %d %d %d %d", &v[0][0], &v[0][1], &v[0][2], &v[1][0], &v[1][1], &v[1][2]);
+    fscanf(out,"%d %d %d %d %d %d", &d[0][0], &d[0][1], &d[0][2], &d[1][0], &d[1][1], &d[1][2]);
+    printf("\nOn obtient la matrice suivante: \n");
     for (int i = 0; i < M; ++i){
         for (int j = 0; j < N; ++j){
+        	v[i][j] = d[i][j];
             printf("%d ", v[i][j]);
         }
         printf("\n");
@@ -186,14 +189,104 @@ void Parser(char *myfile, int N, int M, int v[][N], double* x, double* c){
 int main(){
 	double TEMPS_MAX = 1000.0;
 	int NOMBRE_ESPECES, NOMBRE_DE_REACTIONS;
-    double x[NOMBRE_ESPECES], c[NOMBRE_DE_REACTIONS];
-	int v[NOMBRE_DE_REACTIONS][NOMBRE_ESPECES];
+ //    double x[NOMBRE_ESPECES], c[NOMBRE_DE_REACTIONS];
+	// int v[NOMBRE_DE_REACTIONS][NOMBRE_ESPECES];
 
-	Parser("input.txt", NOMBRE_ESPECES, NOMBRE_DE_REACTIONS, v, x, c);
+   FILE* out = NULL;
+    out = fopen("input.txt", "r"); 
+    if(out == NULL){
+        printf("\nError cannot open file");
+        exit(1);
+    }
+
+    fseek(out, 20, SEEK_SET);
+    //printf("on est a la position: %ld\n", ftell(out));
+    fscanf(out ,"%d", &NOMBRE_ESPECES);
+    fseek(out, 44, SEEK_SET);
+    //printf("on est a la position: %ld\n", ftell(out));
+    fscanf(out, "%d", &NOMBRE_DE_REACTIONS);
+    printf("Nombre de produits: %d\nNombre de reaction : %d\n", NOMBRE_ESPECES, NOMBRE_DE_REACTIONS);
+
+    double x[NOMBRE_ESPECES], c[NOMBRE_DE_REACTIONS];
+    int v[NOMBRE_DE_REACTIONS][NOMBRE_ESPECES];
+
+    fseek(out, 85, SEEK_SET);
+    //printf("on est a la position: %ld\n", ftell(out));
+    fscanf(out,"%lf", &c[0]);
+    printf("c1 = %lf\n", c[0]);
+
+    fseek(out, 126, SEEK_SET);
+    //printf("on est a la position: %ld\n", ftell(out));
+    fscanf(out,"%lf", &c[1]);
+    printf("c2 = %lf\n", c[1]);
+
+    //char d;
+    fseek(out, 175, SEEK_SET);
+    fscanf(out,"%lf", &x[0]);
+    printf("x1, nombre de molecules d'Oxygène: %lf\n", x[0]);
+
+    fseek(out, 184, SEEK_SET);
+    fscanf(out,"%lf", &x[1]);
+    printf("x2, nombre de molecules d'Hydrogene: %lf\n", x[1]);
+
+    fseek(out, 197, SEEK_SET);
+    fscanf(out,"%lf", &x[2]);
+    printf("x3, nombre de molecules d'Eau H2O: %lf\n", x[2]);
+
+    fseek(out, 220, SEEK_SET);
+    fscanf(out,"%d %d %d %d %d %d", &v[0][0], &v[0][1], &v[0][2], &v[1][0], &v[1][1], &v[1][2]);
+    for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+        for (int j = 0; j < NOMBRE_ESPECES; ++j){
+            printf("%d ", v[i][j]);
+        }
+        printf("\n");
+    }
+
+    fclose(out);
+
 	Gillespie("data.txt", c, NOMBRE_ESPECES, v, x, NOMBRE_DE_REACTIONS, TEMPS_MAX);
 
     return 0;
 }
 
+/*-----------------------------------------------------------------------------------------------------------*/
+
+ 	//Gillespie("data.txt", c, NOMBRE_ESPECES, v, x, NOMBRE_DE_REACTIONS, TEMPS_MAX);
+/*-----------------------------------------------------------------------------------------------------------*/
+ //    printf("%lf\n", TEMPS_MAX);
+	// for (int i = 0; i < NOMBRE_ESPECES; ++i){
+	// 	printf("x[%d] = %lf ", i, x[i] );
+	// }printf("\n");
+
+
+	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+	// 	printf("c[%d] = %lf ", i, c[i] );
+	// }printf("\n");
+
+	// double* h = calculDeH(x, NOMBRE_DE_REACTIONS);
+	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+	// 	printf("h[%d] = %lf ", i, h[i] );
+	// }printf("\n");
+
+	// double* a = calculDePropensity(h, c, NOMBRE_DE_REACTIONS);
+	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+	// 	printf("a[%d] = %lf ", i, a[i] );
+	// }printf("\n");
+
+	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+	// 	for (int j = 0; j < NOMBRE_ESPECES; ++j){
+	// 		printf("v[%d][%d] = %d ", i, j, v[i][j]);
+	// 	}printf("\n");
+	// }printf("\n");
+
+	// srand(time(NULL));
+	// double r2 = genererNombreAlea();
+	// int mu;
+
+	// for (int i = 0; i < 10; ++i){
+	// 	mu = calculDMu(a, r2, NOMBRE_DE_REACTIONS);	
+	// 	printf("La reaction n° %d  a eu lieu\n", mu);
+	// }printf("\n");
+/*-----------------------------------------------------------------------------------------------------------*/
 
 
