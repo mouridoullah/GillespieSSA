@@ -2,9 +2,11 @@ Nombre de produits: 3
 Nombre de reaction : 2
 c1 = 2.000000
 c2 = 9.900000
-x1, nombre de molecules d'Oxygène: 200.000000
-x2, nombre de molecules d'Hydrogene: 300.000000
+x1, nombre de molecules d'Oxygène: 550.000000
+x2, nombre de molecules d'Hydrogene: 450.000000
 x3, nombre de molecules d'Eau H2O: 50.000000
+
+On obtient la matrice suivante: 
 -1 -2 1 
 1 2 -1 
 Fin du programme

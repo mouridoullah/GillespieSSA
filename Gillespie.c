@@ -119,7 +119,8 @@ void Gillespie(char *myfile, double* c, int N, int v[][N], double* x, int M, dou
 			if (x[i] <= 0){
 				// On arrete le programme si l'une des especes est totalement consommé
 				printf("Fin du programme\n");	
-				exit(1);
+				//exit(1);
+				return;
 			} 
 		}
 	}
@@ -187,6 +188,10 @@ void Parser(char *myfile, int N, int M, int v[][N], double* x, double* c){
 }
 /*-------------------------------------------------------------*/
 int main(){
+	double start,stop;
+	start = clock();
+
+
 	double TEMPS_MAX = 1000.0;
 	int NOMBRE_ESPECES, NOMBRE_DE_REACTIONS;
  //    double x[NOMBRE_ESPECES], c[NOMBRE_DE_REACTIONS];
@@ -235,6 +240,7 @@ int main(){
 
     fseek(out, 220, SEEK_SET);
     fscanf(out,"%d %d %d %d %d %d", &v[0][0], &v[0][1], &v[0][2], &v[1][0], &v[1][1], &v[1][2]);
+    printf("\nOn obtient la matrice suivante: \n");
     for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
         for (int j = 0; j < NOMBRE_ESPECES; ++j){
             printf("%d ", v[i][j]);
@@ -245,6 +251,12 @@ int main(){
     fclose(out);
 
 	Gillespie("data.txt", c, NOMBRE_ESPECES, v, x, NOMBRE_DE_REACTIONS, TEMPS_MAX);
+
+	stop = clock();
+	double k;
+	k = (stop - start)/1000 ;
+	printf("Temps d'exucution du programme: %f\n",k);
+
 
     return 0;
 }
