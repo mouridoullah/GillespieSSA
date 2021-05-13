@@ -2,8 +2,8 @@ Nombre de produits: 21
 Nombre de reactions: 9
 
 Le nombre de molecule de chaque espece:
-H       = 200 | x0  |
-C       = 100 | x1  |
+H       = 020 | x0  |
+C       = 005 | x1  |
 N       = 610 | x2  |
 O       = 100 | x3  |
 Br      = 250 | x4  |
@@ -12,36 +12,36 @@ Cl      = 300 | x6  |
 H2O2    = 900 | x7  |
 H2      = 640 | x8  |
 N2      = 400 | x9  |
-Br2     = 700 | x10 |
+Br2     = 005 | x10 |
 I2      = 400 | x11 |
 Cl2     = 100 | x12 |
 H2O     = 201 | x13 |
 O2      = 900 | x14 |
 HBrO    = 900 | x15 |
-CO2     = 430 | x16 |
+CO2     = 005 | x16 |
 CO      = 930 | x17 |
 CH4     = 900 | x18 |
-C6H6    = 930 | x19 |
+C6H6    = 130 | x19 |
 C4H10   = 300 | x20 |
 
 Reaction 0:
 2H + O       → H2O          | c = 0.050  | h0 = x0*x3     |
 Reaction 1:
-H2O          → 2H + O       | c = 1000   | h1 = x13       |
+H2O          → 2H + O       | c = 0100   | h1 = x13       |
 Reaction 2:
-CH4 + 2O2    → CO2 + 2H2O   | c = 0.0002 | h2 = x18*x14   |
+CH4 + 2O2    → CO2 + 2H2O   | c = 0.0020 | h2 = x18*x14   |
 Reaction 3:
-CH4          → C + 4H       | c = 1000   | h3 = x18       |
+CH4          → C + 4H       | c = 0001   | h3 = x18       |
 Reaction 4:
-2HBrO + 2H   → Br2 + 2H2O   | c = 0.010  | h4 = x15*x0    |
+2HBrO + 2H   → Br2 + 2H2O   | c = 0.0005 | h4 = x15*x0    |
 Reaction 5:
-CO           → C + O        | c = 1000   | h5 = x17       |
+CO           → C + O        | c = 00001  | h5 = x17       |
 Reaction 6:
-C4H10 + O2   → CO2 + H2O    | c = 0.0006 | h6 = x20*x14   |
+C4H10 + O2   → CO2 + H2O    | c = 0.0030 | h6 = x20*x14   |
 Reaction 7:
-2C6H6 + 15O2 → 12CO2 + 6H2O | c = 0.0001 | h7 = x19*x14   |
+2C6H6 + 15O2 → 12CO2 + 6H2O | c = 0.0004 | h7 = x19*x14   |
 Reaction 8:
-H2O2         → 2O + O2      | c = 1000   | h8 = x7        |
+H2O2         → 2O + O2      | c = 0010   | h8 = x7        |
 
 
 La matrice donne:

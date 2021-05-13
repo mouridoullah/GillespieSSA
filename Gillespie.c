@@ -42,14 +42,14 @@ double* calculDeH(double* x, int M) {
 	// 3S1        -> reactions products => hu = (1/6) * X1(X1 - 1)(X1 - 2)
 		double* h = malloc(M*sizeof(double));
 	    h[0] = x[0]*x[3];
-	    h[1] = 1.0;	
+	    h[1] = x[13];	
 	    h[2] = x[18]*x[14];
-	    h[3] = 1.0;
+	    h[3] = x[18];
 	    h[4] = x[15]*x[0];
-	    h[5] = 1.0;
+	    h[5] = x[17];
 	    h[6] = x[20]*x[14];
 	    h[7] = x[19]*x[14];
-	    h[8] = 1.0;
+	    h[8] = x[7];
 
 	    return h;
 }
@@ -175,7 +175,7 @@ int main(){
     fscanf(out, "%d", &NOMBRE_DE_REACTIONS);
     printf("Nombre de reactions: %d\n", NOMBRE_DE_REACTIONS);
 
-    printf("######################################################\n");
+    //printf("######################################################\n");
 
     double x[NOMBRE_ESPECES], c[NOMBRE_DE_REACTIONS];
     int v[NOMBRE_DE_REACTIONS][NOMBRE_ESPECES];
@@ -183,60 +183,61 @@ int main(){
     pos += 53;
     fseek(out, pos, SEEK_SET);
     fscanf(out,"%lf", &x[0]);
-    printf("x[0]: %f\n", x[0]);
+    //printf("x[0]: %f\n", x[0]);
 
     for (int i = 1; i < NOMBRE_ESPECES; ++i){
     	pos += 22;
     	fseek(out, pos, SEEK_SET);
     	fscanf(out,"%lf", &x[i]);
-    	printf("x[%d]: %f\n", i, x[i]);
+    	//printf("x[%d]: %f\n", i, x[i]);
     }
     
-    printf("\n######################################################\n\n");
+    //printf("\n######################################################\n\n");
 
     pos += 60;
     fseek(out, pos, SEEK_SET);
     fscanf(out,"%lf", &c[0]);
-    printf("c[0]: %f\n", c[0]);
+    //printf("c[0]: %f\n", c[0]);
 
    for (int i = 1; i < NOMBRE_DE_REACTIONS; ++i){
    	pos += 74;
    	fseek(out, pos, SEEK_SET);
    	fscanf(out,"%lf", &c[i]);
-   	printf("c[%d]: %f\n", i, c[i]);
+   	//printf("c[%d]: %f\n", i, c[i]);
    }    
 
-    //printf("\n%ld\n", ftell(out));
+ //    //printf("\n%ld\n", ftell(out));
    
-    // char d;
-    // for (pos = 1195; pos < 1413; ++pos){
-    //   	fseek(out, pos, SEEK_SET);
-    //  	fscanf(out, "%c", &d);
-    //  	printf("%c", d);
-    // }
-    // // printf("\n%ld\n", ftell(out));
+ //    // char d;
+ //    // for (pos = 1195; pos < 1413; ++pos){
+ //    //   	fseek(out, pos, SEEK_SET);
+ //    //  	fscanf(out, "%c", &d);
+ //    //  	printf("%c", d);
+ //    // }
+ //    // // printf("\n%ld\n", ftell(out));
 
-    printf("\n######################################################\n\n");
+    //printf("\n######################################################\n\n");
 
     pos += 220;
     fseek(out, pos, SEEK_SET);
     fscanf(out,"%d", &v[0][0]);
-	printf("v[0][0]: %d\n", v[0][0]);
+	//printf("v[0][0]: %d ", v[0][0]);
     for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
     	for (int j = 1; j < NOMBRE_ESPECES; ++j){
     		pos += 8;
     	    fseek(out, pos, SEEK_SET);
    			fscanf(out,"%d", &v[i][j]);	
-   			printf("v[%d][%d]: %d\n", i, j, v[i][j]);
+   			//printf("v[%d][%d]: %d ", i, j, v[i][j]);
     	}
     	printf("\n");
     	pos += 9;
         fseek(out, pos, SEEK_SET);
-    	fscanf(out,"%d", &v[i][0]);
-	 	if (i < NOMBRE_DE_REACTIONS - 1) printf("v[%d][0]: %d\n", i, v[i][0]);
+    	fscanf(out,"%d", &v[i+1][0]);
+	 	//if (i < NOMBRE_DE_REACTIONS - 1) printf("v[%d][0]: %d ", i, v[i][0]);
     }
 
-    fclose(out);
+    
+
 
     printf("\n######################################################\n\n");
 
@@ -246,20 +247,37 @@ int main(){
 	}printf("\n");
     printf("\n######################################################\n\n");
 	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
-		printf("c[%d] = %lf\n", i, c[i] );
+	 	for (int j = 0; j < NOMBRE_ESPECES; ++j){
+	 		printf("v[%d][%d]: %d ", i, j, v[i][j]);
+	 	}printf("\n");
 	}printf("\n");
     printf("\n######################################################\n\n");
 	double* h = calculDeH(x, NOMBRE_DE_REACTIONS);
 	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
 		printf("h[%d] = %lf\n", i, h[i] );
 	}printf("\n");
+	printf("\n######################################################\n\n");
+	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
+		printf("c[%d] = %lf\n", i, c[i] );
+	}printf("\n");
+
     printf("\n######################################################\n\n");
    	double* a = calculDePropensity(h, c, NOMBRE_DE_REACTIONS);
 	for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
 		printf("a[%d] = %lf\n", i, a[i] );
 	}printf("\n");
+    printf("\n######################################################\n\n");
 
- //    printf("\n######################################################\n\n");
+    srand(time(NULL));
+    double r2 = 0;
+	int mu = 0;
+	for (int i = 0; i < 105; ++i){
+		r2 = genererNombreAlea();
+		mu = calculDMu(a, r2, NOMBRE_DE_REACTIONS);	
+		printf("%d ", mu);
+	}printf("\n");
+
+    printf("\n######################################################\n\n");
 
 
 	Gillespie("data.txt", c, NOMBRE_ESPECES, v, x, NOMBRE_DE_REACTIONS, TEMPS_MAX);
@@ -269,42 +287,12 @@ int main(){
 	k = (stop - start)/1000 ;
 	printf("Temps d'exucution du programme: %f\n",k);
 
+	fclose(out);
 
     return 0;
 }
 
 
-	// printf("%lf\n", TEMPS_MAX);
-	// for (int i = 0; i < NOMBRE_ESPECES; ++i){
-	// 	printf("x[%d] = %lf ", i, x[i] );
-	// }printf("\n");
 
 
-	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
-	// 	printf("c[%d] = %lf ", i, c[i] );
-	// }printf("\n");
 
-	// double* h = calculDeH(x, NOMBRE_DE_REACTIONS);
-	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
-	// 	printf("h[%d] = %lf ", i, h[i] );
-	// }printf("\n");
-
-	// double* a = calculDePropensity(h, c, NOMBRE_DE_REACTIONS);
-	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
-	// 	printf("a[%d] = %lf ", i, a[i] );
-	// }printf("\n");
-
-	// for (int i = 0; i < NOMBRE_DE_REACTIONS; ++i){
-	// 	for (int j = 0; j < NOMBRE_ESPECES; ++j){
-	// 		printf("v[%d][%d] = %d ", i, j, v[i][j]);
-	// 	}
-	// }printf("\n");
-
-	// srand(time(NULL));
-	// double r2 = genererNombreAlea();
-	// int mu = calculDMu(a, r2, NOMBRE_DE_REACTIONS);	
-
-	// double TEMPS_MAX; int NOMBRE_DE_REACTIONS;
-	// double x[NOMBRE_ESPECES];
-	// double c[NOMBRE_DE_REACTIONS];
-	// int v[NOMBRE_DE_REACTIONS][NOMBRE_ESPECES];
