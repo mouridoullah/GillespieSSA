@@ -50,6 +50,11 @@ double* calculDeH(double* x, int M) {
 	    h[6] = x[20]*x[14];
 	    h[7] = x[19]*x[14];
 	    h[8] = x[7];
+		h[9] = x[8]*x[12];
+		h[10] = x[9]*x[14];
+		h[11] = x[9]*x[8];
+		h[12] = x[10];
+		h[13] = x[0]*x[6];
 
 	    return h;
 }
@@ -194,27 +199,27 @@ int main(){
     
     //printf("\n######################################################\n\n");
 
-    pos += 60;
+    pos += 62;
     fseek(out, pos, SEEK_SET);
     fscanf(out,"%lf", &c[0]);
     //printf("c[0]: %f\n", c[0]);
 
    for (int i = 1; i < NOMBRE_DE_REACTIONS; ++i){
-   	pos += 74;
+   	pos += 75;
    	fseek(out, pos, SEEK_SET);
    	fscanf(out,"%lf", &c[i]);
    	//printf("c[%d]: %f\n", i, c[i]);
    }    
 
- //    //printf("\n%ld\n", ftell(out));
+    //printf("\n%ld\n", ftell(out));
    
- //    // char d;
- //    // for (pos = 1195; pos < 1413; ++pos){
- //    //   	fseek(out, pos, SEEK_SET);
- //    //  	fscanf(out, "%c", &d);
- //    //  	printf("%c", d);
- //    // }
- //    // // printf("\n%ld\n", ftell(out));
+    // char d;
+    // for (pos = 1580; pos < 1798; ++pos){
+    //   	fseek(out, pos, SEEK_SET);
+    //  	fscanf(out, "%c", &d);
+    //  	printf("%c", d);
+    // }
+    // printf("\n%ld\n", ftell(out));
 
     //printf("\n######################################################\n\n");
 
@@ -229,7 +234,7 @@ int main(){
    			fscanf(out,"%d", &v[i][j]);	
    			//printf("v[%d][%d]: %d ", i, j, v[i][j]);
     	}
-    	printf("\n");
+    	//printf("\n");
     	pos += 9;
         fseek(out, pos, SEEK_SET);
     	fscanf(out,"%d", &v[i+1][0]);
@@ -279,6 +284,7 @@ int main(){
 
     printf("\n######################################################\n\n");
 
+    fclose(out);
 
 	Gillespie("data.txt", c, NOMBRE_ESPECES, v, x, NOMBRE_DE_REACTIONS, TEMPS_MAX);
 
@@ -287,7 +293,7 @@ int main(){
 	k = (stop - start)/1000 ;
 	printf("Temps d'exucution du programme: %f\n",k);
 
-	fclose(out);
+
 
     return 0;
 }
