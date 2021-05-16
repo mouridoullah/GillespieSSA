@@ -1,1 +1,1 @@
-make && ./Gillespie.o && python plot.py 
+make && ./Gillespie.o > donnéesDedepart.txt && python plot.py 
